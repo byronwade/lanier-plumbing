@@ -54,7 +54,6 @@ Desktop.ini
 
 # Temporary files
 *.log
-*.sql
 *.sqlite
 *.swp
 *~
