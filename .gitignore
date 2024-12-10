@@ -1,0 +1,69 @@
+# WordPress core files to ignore
+wp-config.php
+wp-content/uploads/
+wp-content/upgrade/
+wp-content/backup-db/
+wp-content/cache/
+wp-content/backups/
+
+# WordPress debugging
+debug.log
+
+# Node modules
+node_modules/
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+.pnpm-debug.log
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Build files
+/build/
+/dist/
+.next/
+out/
+
+# Development tools
+.DS_Store
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Package managers
+composer.phar
+/vendor/
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Cache files
+.cache/
+.php_cs.cache
+.phpunit.result.cache
+.eslintcache
+
+# Operating System
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Temporary files
+*.log
+*.sql
+*.sqlite
+*.swp
+*~
+
+# WordPress specific plugins/themes to ignore (customize as needed)
+# wp-content/plugins/specific-plugin-to-ignore/
+# wp-content/themes/specific-theme-to-ignore/
+
+# Local development files
+docker-compose.override.yml
+docker-compose.*.yml
+!docker-compose.yml 
