@@ -1,5 +1,5 @@
 /* global jQuery, wp */
-jQuery(function ($) {
+jQuery(($) => {
 	"use strict";
 
 	// Tab functionality
@@ -18,12 +18,12 @@ jQuery(function ($) {
 
 	// Image upload functionality
 	let mediaFrame;
-	$(".upload-image").on("click", function (e) {
+	$(document).on("click", ".upload-image", function (e) {
 		e.preventDefault();
 		const button = $(this);
-		const field = button.siblings('input[type="hidden"]');
-		const preview = button.siblings(".image-preview");
-		const removeButton = button.siblings(".remove-image");
+		const imageField = button.closest(".space-y-4");
+		const imageInput = imageField.find('input[type="hidden"]');
+		const imagePreview = imageField.find(".image-preview");
 
 		// Create the media frame
 		mediaFrame = wp.media({
@@ -38,35 +38,33 @@ jQuery(function ($) {
 		});
 
 		// When an image is selected, run a callback
-		mediaFrame.on("select", function () {
+		mediaFrame.on("select", () => {
 			const attachment = mediaFrame.state().get("selection").first().toJSON();
-			field.val(attachment.id);
-			preview.html('<img src="' + attachment.sizes.medium.url + '" alt="">');
-			button.text("Change Image");
+			imageInput.val(attachment.id);
 
-			// Show remove button if it doesn't exist
-			if (removeButton.length === 0) {
-				$('<button type="button" class="button remove-image">Remove Image</button>').insertAfter(button);
-			} else {
-				removeButton.show();
-			}
+			// Update preview with medium size if available, otherwise use full size
+			const previewUrl = attachment.sizes.medium ? attachment.sizes.medium.url : attachment.url;
+			imagePreview.html('<img src="' + previewUrl + '" alt="" class="max-w-xs rounded-lg shadow-sm">');
+
+			button.text("Change Image");
+			imageField.find(".remove-image").show();
 		});
 
 		// Open the modal
 		mediaFrame.open();
 	});
 
-	// Remove image functionality
+	// Handle image removal
 	$(document).on("click", ".remove-image", function (e) {
 		e.preventDefault();
 		const button = $(this);
-		const field = button.siblings('input[type="hidden"]');
-		const preview = button.siblings(".image-preview");
-		const uploadButton = button.siblings(".upload-image");
+		const imageField = button.closest(".space-y-4");
+		const imageInput = imageField.find('input[type="hidden"]');
+		const imagePreview = imageField.find(".image-preview");
 
-		field.val("");
-		preview.empty();
-		uploadButton.text("Select Image");
+		imageInput.val("");
+		imagePreview.empty();
+		imageField.find(".upload-image").text("Select Image");
 		button.hide();
 	});
 });

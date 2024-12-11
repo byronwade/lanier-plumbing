@@ -1,11 +1,29 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-	content: ["./*.php", "./inc/**/*.php", "./template-parts/**/*.php", "./js/**/*.js"],
+	content: [
+		'./**/*.php',
+		'./template-parts/**/*.php',
+		'./templates/**/*.php',
+		'./inc/**/*.php'
+	],
+	important: true,
 	theme: {
-		extend: {},
-	},
-	plugins: [require("@tailwindcss/forms"), require("@tailwindcss/typography")],
-	corePlugins: {
-		preflight: true, // Enable Tailwind's base styles
-	},
+		extend: {
+			colors: {
+				red: {
+					600: '#dc2626',
+					800: '#991b1b'
+				},
+				gray: {
+					200: '#e5e7eb',
+					500: '#6b7280',
+					700: '#374151',
+					900: '#111827'
+				}
+			},
+			fontFamily: {
+				sans: ['Inter', 'system-ui', 'sans-serif']
+			}
+		}
+	}
 };

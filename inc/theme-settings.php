@@ -1028,44 +1028,6 @@ function lanier_plumbing_admin_scripts($hook) {
                 $(".tab-pane").removeClass("active");
                 $(target).addClass("active");
             });
-
-            // Initialize media uploader
-            $(".upload-image").on("click", function(e) {
-                e.preventDefault();
-                var button = $(this);
-                var imageField = button.closest(".image-field");
-                var imagePreview = imageField.find(".image-preview");
-                var imageInput = imageField.find("input[type=hidden]");
-                
-                var frame = wp.media({
-                    title: "Select or Upload Image",
-                    button: {
-                        text: "Use this image"
-                    },
-                    multiple: false
-                });
-
-                frame.on("select", function() {
-                    var attachment = frame.state().get("selection").first().toJSON();
-                    imageInput.val(attachment.id);
-                    imagePreview.html("<img src=\"" + attachment.url + "\" alt=\"\">");
-                    button.text("Change Image");
-                    imageField.find(".remove-image").show();
-                });
-
-                frame.open();
-            });
-
-            // Handle image removal
-            $(".remove-image").on("click", function(e) {
-                e.preventDefault();
-                var button = $(this);
-                var imageField = button.closest(".image-field");
-                imageField.find("input[type=hidden]").val("");
-                imageField.find(".image-preview").empty();
-                imageField.find(".upload-image").text("Select Image");
-                button.hide();
-            });
         });
     ');
 }
