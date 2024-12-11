@@ -44,34 +44,6 @@ function lanier_plumbing_add_admin_menu() {
         'lanier-plumbing-settings',
         'lanier_plumbing_settings_page_html'
     );
-
-    // Add core WordPress pages but keep their original URLs
-    add_submenu_page(
-        'lanier-plumbing',
-        'Customize',
-        'Customize Theme',
-        'manage_options',
-        'customize.php?return=' . urlencode(admin_url('admin.php?page=lanier-plumbing-settings')),
-        ''
-    );
-
-    add_submenu_page(
-        'lanier-plumbing',
-        'Menus',
-        'Navigation Menus',
-        'manage_options',
-        'nav-menus.php',
-        ''
-    );
-
-    add_submenu_page(
-        'lanier-plumbing',
-        'Widgets',
-        'Widgets',
-        'manage_options',
-        'widgets.php',
-        ''
-    );
 }
 add_action('admin_menu', 'lanier_plumbing_add_admin_menu');
 
@@ -317,7 +289,7 @@ function lanier_plumbing_text_field_callback($args) {
         id="<?php echo esc_attr($args['label_for']); ?>"
         name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
         value="<?php echo esc_attr($value); ?>"
-        class="regular-text"
+        class="w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
     >
     <?php
@@ -332,7 +304,7 @@ function lanier_plumbing_phone_field_callback($args) {
         id="<?php echo esc_attr($args['label_for']); ?>"
         name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
         value="<?php echo esc_attr($value); ?>"
-        class="regular-text"
+        class="w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
         pattern="[\+]?[0-9\s\-\(\)]+"
     >
@@ -348,7 +320,7 @@ function lanier_plumbing_email_field_callback($args) {
         id="<?php echo esc_attr($args['label_for']); ?>"
         name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
         value="<?php echo esc_attr($value); ?>"
-        class="regular-text"
+        class="w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
     >
     <?php
@@ -361,7 +333,7 @@ function lanier_plumbing_textarea_field_callback($args) {
     <textarea
         id="<?php echo esc_attr($args['label_for']); ?>"
         name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
-        class="large-text"
+        class="w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         rows="3"
         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
     ><?php echo esc_textarea($value); ?></textarea>
@@ -377,7 +349,7 @@ function lanier_plumbing_url_field_callback($args) {
         id="<?php echo esc_attr($args['label_for']); ?>"
         name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
         value="<?php echo esc_attr($value); ?>"
-        class="regular-text"
+        class="w-full max-w-lg border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
         placeholder="<?php echo esc_attr($args['placeholder']); ?>"
     >
     <?php
@@ -390,29 +362,32 @@ function lanier_plumbing_hours_field_callback($args) {
     $open_time = isset($options['hours_' . $day . '_open']) ? $options['hours_' . $day . '_open'] : '';
     $close_time = isset($options['hours_' . $day . '_close']) ? $options['hours_' . $day . '_close'] : '';
     ?>
-    <div class="hours-field">
-        <label>
+    <div class="flex items-center space-x-4">
+        <label class="inline-flex items-center">
             <input
                 type="checkbox"
                 name="lanier_plumbing_options[hours_<?php echo esc_attr($day); ?>_closed]"
                 value="1"
                 <?php checked($is_closed); ?>
+                class="text-blue-600 border-gray-300 rounded shadow-sm focus:border-blue-500 focus:ring-blue-500"
             >
-            Closed
+            <span class="ml-2 text-sm text-gray-600">Closed</span>
         </label>
-        <div class="hours-inputs">
+        <div class="flex items-center space-x-2">
             <input
                 type="time"
                 name="lanier_plumbing_options[hours_<?php echo esc_attr($day); ?>_open]"
                 value="<?php echo esc_attr($open_time); ?>"
                 <?php disabled($is_closed); ?>
+                class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             >
-            to
+            <span class="text-gray-500">to</span>
             <input
                 type="time"
                 name="lanier_plumbing_options[hours_<?php echo esc_attr($day); ?>_close]"
                 value="<?php echo esc_attr($close_time); ?>"
                 <?php disabled($is_closed); ?>
+                class="border-gray-300 rounded-md shadow-sm focus:border-blue-500 focus:ring-blue-500 sm:text-sm"
             >
         </div>
     </div>
@@ -424,10 +399,10 @@ function lanier_plumbing_image_field_callback($args) {
     $image_id = isset($options[$args['field_name']]) ? $options[$args['field_name']] : '';
     $image_url = $image_id ? wp_get_attachment_image_url($image_id, 'medium') : '';
     ?>
-    <div class="image-field">
+    <div class="space-y-4">
         <div class="image-preview">
             <?php if ($image_url) : ?>
-                <img src="<?php echo esc_url($image_url); ?>" alt="">
+                <img src="<?php echo esc_url($image_url); ?>" alt="" class="max-w-xs rounded-lg shadow-sm">
             <?php endif; ?>
         </div>
         <input
@@ -436,12 +411,16 @@ function lanier_plumbing_image_field_callback($args) {
             name="lanier_plumbing_options[<?php echo esc_attr($args['field_name']); ?>]"
             value="<?php echo esc_attr($image_id); ?>"
         >
-        <button type="button" class="button upload-image">
-            <?php echo $image_id ? 'Change Image' : 'Select Image'; ?>
-        </button>
-        <?php if ($image_id) : ?>
-            <button type="button" class="button remove-image">Remove Image</button>
-        <?php endif; ?>
+        <div class="flex space-x-2">
+            <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-gray-700 bg-white border border-gray-300 rounded-md shadow-sm upload-image hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <?php echo $image_id ? 'Change Image' : 'Select Image'; ?>
+            </button>
+            <?php if ($image_id) : ?>
+                <button type="button" class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-red-700 bg-white border border-red-300 rounded-md shadow-sm remove-image hover:bg-red-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Remove Image
+                </button>
+            <?php endif; ?>
+        </div>
     </div>
     <?php
 }
@@ -526,51 +505,69 @@ function lanier_plumbing_settings_page_html() {
 
     ?>
     <div class="wrap">
-        <h1><?php echo esc_html(get_admin_page_title()); ?></h1>
-        <?php settings_errors('lanier_plumbing_messages'); ?>
-        
-        <div class="nav-tab-wrapper">
-            <a href="#business-info" class="nav-tab nav-tab-active">Business Info</a>
-            <a href="#contact-info" class="nav-tab">Contact Info</a>
-            <a href="#business-hours" class="nav-tab">Business Hours</a>
-            <a href="#social-media" class="nav-tab">Social Media</a>
-        </div>
+        <div class="max-w-5xl mx-auto">
+            <h1 class="mb-6 text-2xl font-bold"><?php echo esc_html(get_admin_page_title()); ?></h1>
+            <?php settings_errors('lanier_plumbing_messages'); ?>
+            
+            <form method="post" action="options.php" class="bg-white rounded-lg shadow-sm">
+                <?php
+                settings_fields('lanier_plumbing_options');
+                ?>
+                
+                <div class="p-6 space-y-6">
+                    <?php do_settings_sections('lanier-plumbing-settings'); ?>
+                </div>
 
-        <div class="tab-content">
-            <div id="business-info" class="tab-pane active">
-                <form method="post" action="options.php">
-                    <?php
-                    settings_fields('lanier_plumbing_options');
-                    do_settings_sections('lanier-plumbing-settings');
-                    submit_button('Save Settings');
-                    ?>
-                </form>
-            </div>
+                <div class="px-6 py-4 border-t border-gray-200 rounded-b-lg bg-gray-50">
+                    <?php submit_button('Save Settings', 'primary', 'submit', false, array('class' => 'px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2')); ?>
+                </div>
+            </form>
         </div>
     </div>
 
     <style>
+    /* Override WordPress admin styles */
     .wrap {
-        max-width: 1200px;
+        margin: 20px 20px 0 2px;
     }
-    .nav-tab-wrapper {
-        margin-bottom: 20px;
+    .form-table th {
+        padding: 20px 10px 20px 0;
+        width: 200px;
+        vertical-align: top;
     }
-    .tab-content {
-        background: white;
-        padding: 20px;
-        border: 1px solid #ccd0d4;
-        border-radius: 0 4px 4px 4px;
-        margin-top: -1px;
+    .form-table td {
+        padding: 15px 10px;
+        vertical-align: middle;
     }
-    .tab-pane {
-        display: none;
+    .form-table input[type="text"],
+    .form-table input[type="email"],
+    .form-table input[type="url"],
+    .form-table input[type="tel"],
+    .form-table textarea {
+        width: 100%;
+        max-width: 400px;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.875rem;
+        line-height: 1.25rem;
+        color: #374151;
+        background-color: #fff;
+        box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     }
-    .tab-pane.active {
-        display: block;
+    .form-table input[type="text"]:focus,
+    .form-table input[type="email"]:focus,
+    .form-table input[type="url"]:focus,
+    .form-table input[type="tel"]:focus,
+    .form-table textarea:focus {
+        outline: 2px solid transparent;
+        outline-offset: 2px;
+        border-color: #2563eb;
+        ring-color: #3b82f6;
+        ring-offset-width: 2px;
     }
-    .form-table {
-        margin-top: 0;
+    .form-table textarea {
+        min-height: 100px;
     }
     .hours-field {
         display: flex;
@@ -581,6 +578,15 @@ function lanier_plumbing_settings_page_html() {
         display: flex;
         align-items: center;
         gap: 0.5rem;
+    }
+    .hours-field input[type="time"] {
+        padding: 0.375rem 0.5rem;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        font-size: 0.875rem;
+    }
+    .hours-field input[type="checkbox"] {
+        margin-right: 0.5rem;
     }
     .image-field {
         display: flex;
@@ -594,12 +600,49 @@ function lanier_plumbing_settings_page_html() {
     .image-preview img {
         max-width: 100%;
         height: auto;
-        border: 1px solid #ddd;
-        border-radius: 4px;
-        padding: 5px;
+        border: 1px solid #d1d5db;
+        border-radius: 0.375rem;
+        padding: 0.25rem;
+    }
+    .button.upload-image,
+    .button.remove-image {
+        display: inline-flex;
+        align-items: center;
+        padding: 0.5rem 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        border-radius: 0.375rem;
+        border: 1px solid #d1d5db;
+        background-color: #fff;
+        color: #374151;
+        cursor: pointer;
+        transition: all 150ms ease-in-out;
+    }
+    .button.upload-image:hover,
+    .button.remove-image:hover {
+        background-color: #f3f4f6;
+        border-color: #9ca3af;
     }
     .button.remove-image {
-        margin-left: 10px;
+        margin-left: 0.5rem;
+        color: #dc2626;
+        border-color: #dc2626;
+    }
+    .button.remove-image:hover {
+        background-color: #fee2e2;
+    }
+    h2 {
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: #111827;
+        margin: 2rem 0 1rem;
+        padding-bottom: 0.5rem;
+        border-bottom: 1px solid #e5e7eb;
+    }
+    .updated {
+        background-color: #ecfdf5;
+        border-color: #059669;
+        color: #065f46;
     }
     </style>
     <?php
@@ -715,22 +758,6 @@ function lanier_plumbing_footer_page() {
 }
 
 /**
- * Remove default appearance menu items
- */
-function lanier_plumbing_remove_appearance_menus() {
-    global $submenu, $menu;
-    
-    // Remove the entire Appearance menu
-    remove_menu_page('themes.php');
-    
-    // If somehow submenu items still exist, remove them individually
-    if (isset($submenu['themes.php'])) {
-        unset($submenu['themes.php']);
-    }
-}
-add_action('admin_menu', 'lanier_plumbing_remove_appearance_menus', 999);
-
-/**
  * Redirect theme settings page if not accessed through Lanier Plumbing menu
  */
 function lanier_plumbing_settings_access_control() {
@@ -751,173 +778,154 @@ add_action('admin_init', 'lanier_plumbing_settings_access_control');
  * Dashboard page HTML
  */
 function lanier_plumbing_dashboard_page() {
+    wp_enqueue_style('tailwindcss', 'https://cdn.tailwindcss.com');
     ?>
-    <div class="wrap lanier-plumbing-dashboard">
-        <h1>Welcome to Lanier Plumbing</h1>
-        <div class="about-text">
-            Manage your plumbing website's content, settings, and appearance from this central dashboard.
+    <style>
+        .lucide-icon {
+            width: 1rem !important;
+            height: 1rem !important;
+            flex-shrink: 0;
+        }
+    </style>
+
+    <div class="w-full p-6 space-y-8">
+        <div class="space-y-2">
+            <h1 class="text-3xl font-bold tracking-tight">Welcome to Your Dashboard</h1>
+            <p class="text-lg text-gray-600">Manage your website content and find helpful resources all in one place.</p>
         </div>
 
-        <div class="dashboard-grid">
-            <div class="card">
-                <h2><span class="dashicons dashicons-admin-generic"></span> Quick Settings</h2>
-                <div class="card-content">
-                    <ul class="settings-overview">
-                        <li>
-                            <strong>Business Name:</strong> 
-                            <?php echo esc_html(lanier_plumbing_get_option('business_name', 'Not set')); ?>
-                        </li>
-                        <li>
-                            <strong>Phone:</strong> 
-                            <?php echo esc_html(lanier_plumbing_get_option('business_phone', 'Not set')); ?>
-                        </li>
-                        <li>
-                            <strong>Email:</strong> 
-                            <?php echo esc_html(lanier_plumbing_get_option('business_email', 'Not set')); ?>
-                        </li>
-                    </ul>
-                    <a href="<?php echo admin_url('admin.php?page=lanier-plumbing-settings'); ?>" class="button button-primary">
-                        Manage Settings
-                    </a>
+        <div class="grid grid-cols-1 gap-6 lg:grid-cols-2">
+            <!-- Agency Support Card -->
+            <div class="p-6 space-y-6 bg-white border rounded-lg shadow-sm">
+                <div class="space-y-1">
+                    <h2 class="text-2xl font-semibold">Agency Support</h2>
+                    <p class="text-gray-500">Web Development Team</p>
                 </div>
-            </div>
-
-            <div class="card">
-                <h2><span class="dashicons dashicons-admin-tools"></span> Services</h2>
-                <div class="card-content">
-                    <p>Manage your plumbing services and pricing.</p>
-                    <div class="button-group">
-                        <a href="<?php echo admin_url('post-new.php?post_type=service'); ?>" class="button">Add New Service</a>
-                        <a href="<?php echo admin_url('edit.php?post_type=service'); ?>" class="button">View All Services</a>
+                <div class="space-y-4">
+                    <div class="p-4 rounded-lg bg-blue-50">
+                        <p class="text-blue-700">Available Monday - Friday, 9 AM - 5 PM EST</p>
+                    </div>
+                    <div class="space-y-3">
+                        <a href="mailto:support@webagency.com" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+                            support@webagency.com
+                        </a>
+                        <a href="tel:8005551234" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                            (800) 555-1234
+                        </a>
+                        <a href="#" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Visit Support Portal
+                        </a>
                     </div>
                 </div>
             </div>
 
-            <div class="card">
-                <h2><span class="dashicons dashicons-testimonial"></span> Testimonials</h2>
-                <div class="card-content">
-                    <p>Manage customer testimonials and reviews.</p>
-                    <div class="button-group">
-                        <a href="<?php echo admin_url('post-new.php?post_type=testimonial'); ?>" class="button">Add New Testimonial</a>
-                        <a href="<?php echo admin_url('edit.php?post_type=testimonial'); ?>" class="button">View All Testimonials</a>
+            <!-- Quick Actions Card -->
+            <div class="p-6 space-y-6 bg-white border rounded-lg shadow-sm">
+                <h2 class="text-2xl font-semibold">Quick Actions</h2>
+                <div class="grid grid-cols-2 gap-4">
+                    <a href="<?php echo admin_url('admin.php?page=lanier-plumbing-settings'); ?>" 
+                       class="flex items-center justify-center p-4 text-sm font-medium text-gray-700 transition-colors border rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.22 2h-.44a2 2 0 0 0-2 2v.18a2 2 0 0 1-1 1.73l-.43.25a2 2 0 0 1-2 0l-.15-.08a2 2 0 0 0-2.73.73l-.22.38a2 2 0 0 0 .73 2.73l.15.1a2 2 0 0 1 1 1.72v.51a2 2 0 0 1-1 1.74l-.15.09a2 2 0 0 0-.73 2.73l.22.38a2 2 0 0 0 2.73.73l.15-.08a2 2 0 0 1 2 0l.43.25a2 2 0 0 1 1 1.73V20a2 2 0 0 0 2 2h.44a2 2 0 0 0 2-2v-.18a2 2 0 0 1 1-1.73l.43-.25a2 2 0 0 1 2 0l.15.08a2 2 0 0 0 2.73-.73l.22-.39a2 2 0 0 0-.73-2.73l-.15-.08a2 2 0 0 1-1-1.74v-.5a2 2 0 0 1 1-1.74l.15-.09a2 2 0 0 0 .73-2.73l-.22-.38a2 2 0 0 0-2.73-.73l-.15.08a2 2 0 0 1-2 0l-.43-.25a2 2 0 0 1-1-1.73V4a2 2 0 0 0-2-2z"/><circle cx="12" cy="12" r="3"/></svg>
+                        Update Settings
+                    </a>
+                    <a href="<?php echo admin_url('post-new.php'); ?>" 
+                       class="flex items-center justify-center p-4 text-sm font-medium text-gray-700 transition-colors border rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                        Add New Post
+                    </a>
+                    <a href="<?php echo admin_url('upload.php'); ?>" 
+                       class="flex items-center justify-center p-4 text-sm font-medium text-gray-700 transition-colors border rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg>
+                        Media Library
+                    </a>
+                    <a href="<?php echo admin_url('nav-menus.php'); ?>" 
+                       class="flex items-center justify-center p-4 text-sm font-medium text-gray-700 transition-colors border rounded-lg bg-gray-50 hover:bg-gray-100">
+                        <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" x2="20" y1="12" y2="12"/><line x1="4" x2="20" y1="6" y2="6"/><line x1="4" x2="20" y1="18" y2="18"/></svg>
+                        Edit Menus
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Resources Section -->
+        <div class="p-6 space-y-6 bg-white border rounded-lg shadow-sm">
+            <h2 class="text-2xl font-semibold">Helpful Resources</h2>
+            <div class="grid grid-cols-1 gap-8 md:grid-cols-3">
+                <!-- WordPress Guides -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">WordPress Guides</h3>
+                    <div class="space-y-2">
+                        <a href="https://wordpress.org/support/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            WordPress Support
+                        </a>
+                        <a href="https://wordpress.org/support/article/wordpress-editor/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Using the Editor
+                        </a>
+                        <a href="https://wordpress.org/support/article/media-library-screen/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Media Management
+                        </a>
+                    </div>
+                </div>
+
+                <!-- SEO Resources -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">SEO Resources</h3>
+                    <div class="space-y-2">
+                        <a href="https://yoast.com/wordpress/plugins/seo/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Yoast SEO Guide
+                        </a>
+                        <a href="https://search.google.com/search-console" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Google Search Console
+                        </a>
+                        <a href="https://developers.google.com/search/docs/beginner/seo-starter-guide" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Google SEO Guide
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Security Tips -->
+                <div class="space-y-4">
+                    <h3 class="text-lg font-semibold">Security Tips</h3>
+                    <div class="space-y-2">
+                        <a href="https://wordpress.org/support/article/hardening-wordpress/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            WordPress Security
+                        </a>
+                        <a href="https://www.wordfence.com/learn/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Security Best Practices
+                        </a>
+                        <a href="https://wordpress.org/support/article/updating-wordpress/" class="flex items-center text-blue-600 transition-colors hover:text-blue-800">
+                            <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" x2="21" y1="14" y2="3"/></svg>
+                            Keeping WordPress Updated
+                        </a>
                     </div>
                 </div>
             </div>
+        </div>
 
-            <div class="card">
-                <h2><span class="dashicons dashicons-share"></span> Social Media</h2>
-                <div class="card-content">
-                    <ul class="social-overview">
-                        <?php
-                        $social_platforms = array(
-                            'facebook' => 'Facebook',
-                            'instagram' => 'Instagram',
-                            'twitter' => 'Twitter',
-                            'linkedin' => 'LinkedIn',
-                            'youtube' => 'YouTube',
-                            'yelp' => 'Yelp'
-                        );
-                        foreach ($social_platforms as $key => $label) {
-                            $url = lanier_plumbing_get_option('social_' . $key);
-                            echo '<li class="' . ($url ? 'active' : 'inactive') . '">';
-                            echo '<span class="dashicons dashicons-' . ($url ? 'yes' : 'no') . '"></span> ';
-                            echo esc_html($label);
-                            echo '</li>';
-                        }
-                        ?>
-                    </ul>
-                    <a href="<?php echo admin_url('admin.php?page=lanier-plumbing-settings#social-media'); ?>" class="button">
-                        Manage Social Links
-                    </a>
-                </div>
+        <!-- Emergency Support Card -->
+        <div class="p-6 space-y-4 bg-white border rounded-lg shadow-sm">
+            <h2 class="text-2xl font-semibold">Need urgent assistance?</h2>
+            <div class="space-y-2">
+                <p class="text-gray-600">For emergency support outside of business hours, call our 24/7 support line at</p>
+                <a href="tel:8005559999" class="flex items-center text-xl font-semibold text-blue-600 transition-colors hover:text-blue-800">
+                    <svg class="mr-2 lucide-icon" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
+                    (800) 555-9999
+                </a>
             </div>
         </div>
     </div>
-
-    <style>
-    .lanier-plumbing-dashboard {
-        max-width: 1200px;
-    }
-    .about-text {
-        margin: 1em 0;
-        min-height: 60px;
-        color: #555d66;
-        font-size: 16px;
-    }
-    .dashboard-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-        gap: 20px;
-        margin-top: 20px;
-    }
-    .card {
-        background: #fff;
-        border: 1px solid #ccd0d4;
-        border-radius: 5px;
-    }
-    .card h2 {
-        margin: 0;
-        padding: 15px 20px;
-        border-bottom: 1px solid #ccd0d4;
-        font-size: 16px;
-        display: flex;
-        align-items: center;
-    }
-    .card h2 .dashicons {
-        margin-right: 8px;
-        color: #0073aa;
-    }
-    .card-content {
-        padding: 20px;
-    }
-    .settings-overview, .social-overview {
-        margin: 0 0 20px 0;
-        padding: 0;
-        list-style: none;
-    }
-    .settings-overview li, .social-overview li {
-        margin-bottom: 10px;
-        padding-bottom: 10px;
-        border-bottom: 1px solid #f0f0f0;
-    }
-    .social-overview li {
-        display: flex;
-        align-items: center;
-    }
-    .social-overview li.active .dashicons {
-        color: #46b450;
-    }
-    .social-overview li.inactive .dashicons {
-        color: #dc3232;
-    }
-    .button-group {
-        display: flex;
-        gap: 10px;
-    }
-    </style>
     <?php
-}
-
-/**
- * Create the theme settings page
- */
-function lanier_plumbing_add_settings_page() {
-    add_theme_page(
-        'Theme Settings',
-        'Theme Settings',
-        'manage_options',
-        'lanier-plumbing-settings',
-        'lanier_plumbing_settings_page_html'
-    );
-}
-add_action('admin_menu', 'lanier_plumbing_add_settings_page');
-
-/**
- * Helper function to get theme options
- */
-function lanier_plumbing_get_option($key, $default = '') {
-    $options = get_option('lanier_plumbing_options');
-    return isset($options[$key]) ? $options[$key] : $default;
 }
 
 /**
@@ -987,13 +995,78 @@ function lanier_plumbing_admin_scripts($hook) {
     // Enqueue WordPress media uploader scripts
     wp_enqueue_media();
 
+    // Enqueue WordPress color picker
+    wp_enqueue_style('wp-color-picker');
+    wp_enqueue_script('wp-color-picker');
+
+    // Enqueue jQuery UI for tabs
+    wp_enqueue_script('jquery-ui-tabs');
+    wp_enqueue_style('wp-jquery-ui-dialog');
+
     // Enqueue our custom script
     wp_enqueue_script(
         'lanier-plumbing-admin',
         get_template_directory_uri() . '/js/admin.js',
-        array('jquery'),
+        array('jquery', 'jquery-ui-tabs', 'wp-color-picker'),
         '1.0.0',
         true
     );
+
+    // Add inline script to initialize tabs
+    wp_add_inline_script('lanier-plumbing-admin', '
+        jQuery(document).ready(function($) {
+            // Initialize tabs
+            $(".nav-tab-wrapper").on("click", ".nav-tab", function(e) {
+                e.preventDefault();
+                var target = $(this).attr("href");
+                
+                // Update active tab
+                $(".nav-tab").removeClass("nav-tab-active");
+                $(this).addClass("nav-tab-active");
+                
+                // Show target section
+                $(".tab-pane").removeClass("active");
+                $(target).addClass("active");
+            });
+
+            // Initialize media uploader
+            $(".upload-image").on("click", function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var imageField = button.closest(".image-field");
+                var imagePreview = imageField.find(".image-preview");
+                var imageInput = imageField.find("input[type=hidden]");
+                
+                var frame = wp.media({
+                    title: "Select or Upload Image",
+                    button: {
+                        text: "Use this image"
+                    },
+                    multiple: false
+                });
+
+                frame.on("select", function() {
+                    var attachment = frame.state().get("selection").first().toJSON();
+                    imageInput.val(attachment.id);
+                    imagePreview.html("<img src=\"" + attachment.url + "\" alt=\"\">");
+                    button.text("Change Image");
+                    imageField.find(".remove-image").show();
+                });
+
+                frame.open();
+            });
+
+            // Handle image removal
+            $(".remove-image").on("click", function(e) {
+                e.preventDefault();
+                var button = $(this);
+                var imageField = button.closest(".image-field");
+                imageField.find("input[type=hidden]").val("");
+                imageField.find(".image-preview").empty();
+                imageField.find(".upload-image").text("Select Image");
+                button.hide();
+            });
+        });
+    ');
 }
 add_action('admin_enqueue_scripts', 'lanier_plumbing_admin_scripts'); 
